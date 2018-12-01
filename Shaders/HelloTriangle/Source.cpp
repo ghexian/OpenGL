@@ -22,18 +22,8 @@ int main()
 {
 	GLFWwindow* window;
 	InitWindow(window);
-	Shader ourShader();
-	unsigned int vertexShader;
-	CompileShader(vertexShader, vertexShaderCode, GL_VERTEX_SHADER);
-	unsigned int fragmentShader;
-	CompileShader(fragmentShader, fragmentShaderCode, GL_FRAGMENT_SHADER);
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	Shader ourShader("shader.vs", "shader.fs");
+	ourShader.Use();
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -49,19 +39,12 @@ int main()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		//float timeValue = glfwGetTime();
-		//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-		//int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-		//glUseProgram(shaderProgram);
-		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
